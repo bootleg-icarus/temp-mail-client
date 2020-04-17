@@ -7,7 +7,9 @@ import PerfectScrollBar from 'react-perfect-scrollbar';
 
 const Mails = (props) => {
     const [mails, setMails] = useState([]);
-    const [currentMail, setCurrentMail] = useState(0);
+    const [currentMail, setCurrentMail] = useState(undefined);
+    const [showDetails, setShowDetails] = useState(false);
+
     useEffect(() => {
         if (!isEmpty(props)) {
             if (mails.length === 0) {
@@ -45,7 +47,6 @@ const Mails = (props) => {
                         </TableLabels>
                         {mails.map((mail, index) =>
                             (
-
                                 <Email key={index} onClick={() => handleMailClick(index)}>
                                     <Time>
                                         {moment(mail.headerLines[8].line).format('LT')}
@@ -63,10 +64,27 @@ const Mails = (props) => {
                 </PerfectScrollBar>
                 : <p>No communication yet</p>}
             <RightPanel>
-                <Body dangerouslySetInnerHTML={createMarkupBody()}>
-                </Body>
+                {currentMail || currentMail === 0 ?
+                    <>
+                        <Details onClick={() => { setShowDetails(!showDetails) }}>
+                            {showDetails ? null : <p>Details</p>}
+                            {showDetails ?
+                                <>
+                                    <Time>{moment(mails[currentMail].headerLines[8].line).format('YYYY/MM/DD HH:MM')}</Time>
+                                    <SenderEmail>
+                                        {mails[currentMail].fromAddress}
+                                    </SenderEmail>
+                                    <Subject>
+                                        {mails[currentMail].subject}
+                                    </Subject>
+                                </>
+                                : null}
+                        </Details>
+                        <Body dangerouslySetInnerHTML={createMarkupBody()}>
+                        </Body>
+                    </>
+                    : null}
             </RightPanel>
-
         </Container>
     )
 }
@@ -115,5 +133,9 @@ const Subject = styled.div`
 
 const Body = styled.div`
     margin: 5px;
+`;
+const Details = styled.div`
+    border: 1px solid black;
+
 `;
 
