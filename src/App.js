@@ -20,10 +20,17 @@ function App() {
     console.log("mailEvent", mailEvent);
   }, [emailAddress, mailEvent])
 
+  const fetchFake = () => {
+    fetch('http://localhost:5000/email')
+      .then(data => data.json())
+      .then(res => setMailEvent(res));
+  }
+
   return (
     <div className="App">
       <Header />
       <Mails {...mailEvent} />
+      <button onClick={() => fetchFake()}>Click me for more emails</button>
     </div>
   );
 }
