@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import './App.css';
+import 'react-perfect-scrollbar/dist/css/styles.css';
 import Header from './components/header';
 import Mails from './components/mails';
 

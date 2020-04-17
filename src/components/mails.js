@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
+import PerfectScrollBar from 'react-perfect-scrollbar';
 
 const Mails = (props) => {
     const [mails, setMails] = useState([]);
@@ -33,27 +34,39 @@ const Mails = (props) => {
 
     return (
         <Container>
-            <LeftPanel>
-                {mails.length ? mails.map((mail, index) =>
-                    (
-                        <Email key={index} onClick={() => handleMailClick(index)}>
-                            <Time>
-                                {moment(mail.headerLines[8].line).format('LT')}
-                            </Time>
-                            <SenderEmail>
-                                {mail.fromAddress}
-                            </SenderEmail>
-                            <Subject>
-                                {mail.subject}
-                            </Subject>
-                        </Email>
-                    )
-                ) : <p>No communication yet</p>}
-            </LeftPanel>
+            {mails.length ?
+
+                <PerfectScrollBar>
+                    <LeftPanel>
+                        <TableLabels >
+                            <p>Time</p>
+                            <p>Sender</p>
+                            <p>Subject</p>
+                        </TableLabels>
+                        {mails.map((mail, index) =>
+                            (
+
+                                <Email key={index} onClick={() => handleMailClick(index)}>
+                                    <Time>
+                                        {moment(mail.headerLines[8].line).format('LT')}
+                                    </Time>
+                                    <SenderEmail>
+                                        {mail.fromAddress}
+                                    </SenderEmail>
+                                    <Subject>
+                                        {mail.subject}
+                                    </Subject>
+                                </Email>
+                            )
+                        )}
+                    </LeftPanel>
+                </PerfectScrollBar>
+                : <p>No communication yet</p>}
             <RightPanel>
                 <Body dangerouslySetInnerHTML={createMarkupBody()}>
                 </Body>
             </RightPanel>
+
         </Container>
     )
 }
@@ -61,23 +74,25 @@ const Mails = (props) => {
 export default Mails
 
 const Container = styled.div`
-    padding: 0;
-    border: 1px solid black;
+    padding: 0;    
     height: 80vh;        
     display: grid;
     grid-template-columns: 2fr 3fr;
 `;
-const LeftPanel = styled.div`    
-    border: 1px solid black;
-    overflow-y: scroll;
+const LeftPanel = styled.div`            
     overflow-x: hidden;
 `;
-const RightPanel = styled.div`    
-    border: 1px solid black;
+const TableLabels = styled.div`
+    display: flex;    
+    padding: 0 10% ;
+    p{
+        margin-right:30px;
+    }    
+`;
+const RightPanel = styled.div`        
 `;
 
-const Email = styled.div`
-    border: 1px solid black;
+const Email = styled.div`    
     height: 30px;
     width: 100%;
     display: flex;
