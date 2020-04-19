@@ -1,25 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
+import React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
 import './App.css';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import Header from './components/header';
-import Mails from './components/mails';
+import Home from './pages/home';
 
-const socket = io('http://temp-mail-api.live');
-
-socket.on('connect', () => {
-  console.log("Connected");
-})
 function App() {
-  const [emailAddress, setEmailAddress] = useState('bongachica@shashin-don.online');
-  const [mailEvent, setMailEvent] = useState(undefined);
 
-  useEffect(() => {
-    socket.on(emailAddress, (data) => {
-      setMailEvent(data);
-    })
-    console.log("mailEvent", mailEvent);
-  }, [emailAddress, mailEvent])
 
   // const fetchFake = () => {
   //   fetch('http://localhost:5000/email')
@@ -30,8 +18,14 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Mails {...mailEvent} />
-      {/* <button onClick={() => fetchFake()}>Click me for more emails</button> */}
+      {/* 
+      <button onClick={() => fetchFake()}>Click me for more emails</button> */}
+      <BrowserRouter>
+        <Switch>
+          <Route path='/' component={Home} />
+          {/* <Route to='/mailer' component={Home}/> */}
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }

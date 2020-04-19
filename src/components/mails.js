@@ -1,34 +1,58 @@
 import React, { useState, useEffect } from 'react'
+import io from 'socket.io-client';
 import styled from 'styled-components';
 import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 import PerfectScrollBar from 'react-perfect-scrollbar';
 
+const socket = io('http://temp-mail-api.live');
+socket.on('connect', () => {
+    console.log("Connection established");
+})
+
 const Mails = (props) => {
     const [mails, setMails] = useState([]);
     const [currentMail, setCurrentMail] = useState(undefined);
     const [showDetails, setShowDetails] = useState(false);
+    const [mailEvent, setMailEvent] = useState(undefined);
 
     useEffect(() => {
-        if (!isEmpty(props)) {
+        socket.on(props.emailAddress, async (data) => {
+            setMailEvent(data);
+        })
+        if (!isEmpty(mails) && (props.emailAddress !== mails[0].toAddress)) {
+            resetState();
+        }
+    }, [props.emailAddress])
+
+    const resetState = () => {
+        setMails([]);
+        setShowDetails(false);
+        setCurrentMail(undefined);
+        setMailEvent(undefined);
+    }
+
+    useEffect(() => {
+        if (!isEmpty(mailEvent)) {
             if (mails.length === 0) {
+                // setMails(prev => (prev.push(mailEvent)));
                 let temp = [];
-                temp.push(props);
+                temp.push(mailEvent);
                 setMails(temp);
             } else {
-                const found = mails.find(mail => mail.uniqueEmailKey === props.uniqueEmailKey);
+                const found = mails.find(mail => mail.uniqueEmailKey === mailEvent.uniqueEmailKey);
                 if (!found) {
                     let temp = cloneDeep(mails);
-                    temp.push(props);
+                    temp.push(mailEvent);
                     setMails(temp);
                 }
             }
         }
-    }, [props, mails]);
+    }, [mails, mailEvent]);
 
     const handleMailClick = (index) => {
-        setCurrentMail(index)
+        setCurrentMail(index);
     }
     const createMarkupBody = () => {
         return { __html: `${mails[currentMail] ? mails[currentMail].html : ''}` }
@@ -49,7 +73,7 @@ const Mails = (props) => {
                             (
                                 <Email key={index} onClick={() => handleMailClick(index)}>
                                     <Time>
-                                        {moment(mail.headerLines[8].line).format('LT')}
+                                        {moment(mail.headerLines[8].line, "Date: ddd, DD MMM YYYY HH:mm:ss ZZ").format('LT')}
                                     </Time>
                                     <SenderEmail>
                                         {mail.fromAddress}
@@ -70,7 +94,9 @@ const Mails = (props) => {
                             {showDetails ? null : <p>Details</p>}
                             {showDetails ?
                                 <>
-                                    <Time>{moment(mails[currentMail].headerLines[8].line).format('YYYY/MM/DD HH:MM')}</Time>
+                                    <Time>
+                                        {moment(mails[currentMail].headerLines[8].line, "Date: ddd, DD MMM YYYY HH:mm:ss ZZ").format('YYYY/MM/DD HH:MM')}
+                                    </Time>
                                     <SenderEmail>
                                         {mails[currentMail].fromAddress}
                                     </SenderEmail>
