@@ -6,14 +6,14 @@ const NewMailInput = (props) => {
 
     return (
         <>
-            <StyledInfo>Please enter your username here, the domain will be attached automatically</StyledInfo>
+            <StyledInfo>Please enter an username here, the domain will be attached automatically</StyledInfo>
             <Container>
 
                 <StyledInput onChange={(e) => { setInputValue(e.target.value) }} />
                 <StyledButton onClick={() => {
                     props.inputHandler(inputValue);
                 }}>
-                    Send
+                    Start receiving emails
 
             </StyledButton>
             </Container>
@@ -38,7 +38,7 @@ const StyledInput = styled.input`
 
 const StyledButton = styled.button`
     height: 2rem;
-    width: 6rem;
+    width: 12rem;
     border-radius: 0.5rem;
     border: none;
 

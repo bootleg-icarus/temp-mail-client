@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import NewMailInput from '../components/newMailInput';
 import Mails from '../components/mails';
+import ApiInfo from '../components/APIinfo';
 
 const Home = () => {
     const [emailAddress, setEmailAddress] = useState('');
@@ -25,6 +26,7 @@ const Home = () => {
         <Container>
             <NewMailInput inputHandler={emailInputHandler} />
             {emailAddress.length ? <Mails emailAddress={emailAddress} /> : null}
+            <ApiInfo />
         </Container>
     )
 }

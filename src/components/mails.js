@@ -24,7 +24,7 @@ const Mails = (props) => {
         if (!isEmpty(mails) && (props.emailAddress !== mails[0].toAddress)) {
             resetState();
         }
-    }, [props.emailAddress])
+    }, [props.emailAddress, mails])
 
     const resetState = () => {
         setMails([]);
