@@ -1,3 +1,18 @@
+:root{
+  --blue: rgb(169, 189, 255);
+  --green: rgb(188, 255, 182);
+  --yellow: rgb(250, 255, 177);
+  --orange: #f5a623;
+}
+
 .App {
   text-align: center;
+}
+
+*{
+  background-color: black;
+  color: white;
+}
+.lang-dropdown{
+  width: 30rem;  
 }

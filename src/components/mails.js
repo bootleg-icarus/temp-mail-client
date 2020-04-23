@@ -59,59 +59,63 @@ const Mails = (props) => {
     }
 
     return (
-        <Container>
-            {mails.length ?
+        <>
+            <p>Listening for emails sent to: {props.emailAddress}</p>
+            <Container>
 
-                <PerfectScrollBar>
-                    <LeftPanel>
-                        <TableLabels >
-                            <p>Time</p>
-                            <p>Sender</p>
-                            <p>Subject</p>
-                        </TableLabels>
-                        {mails.map((mail, index) =>
-                            (
-                                <Email key={index} onClick={() => handleMailClick(index)}>
-                                    <Time>
-                                        {moment(mail.headerLines[8].line, "Date: ddd, DD MMM YYYY HH:mm:ss ZZ").format('LT')}
-                                    </Time>
-                                    <SenderEmail>
-                                        {mail.fromAddress}
-                                    </SenderEmail>
-                                    <Subject>
-                                        {mail.subject}
-                                    </Subject>
-                                </Email>
-                            )
-                        )}
-                    </LeftPanel>
-                </PerfectScrollBar>
-                : <p>No communication yet</p>}
-            <RightPanel>
-                {currentMail || currentMail === 0 ?
-                    <>
-                        <Details onClick={() => { setShowDetails(!showDetails) }}>
-                            {showDetails ? null : <p>Details</p>}
-                            {showDetails ?
-                                <>
-                                    <Time>
-                                        {moment(mails[currentMail].headerLines[8].line, "Date: ddd, DD MMM YYYY HH:mm:ss ZZ").format('YYYY/MM/DD HH:MM')}
-                                    </Time>
-                                    <SenderEmail>
-                                        {mails[currentMail].fromAddress}
-                                    </SenderEmail>
-                                    <Subject>
-                                        {mails[currentMail].subject}
-                                    </Subject>
-                                </>
-                                : null}
-                        </Details>
-                        <Body dangerouslySetInnerHTML={createMarkupBody()}>
-                        </Body>
-                    </>
-                    : null}
-            </RightPanel>
-        </Container>
+                {mails.length ?
+
+                    <PerfectScrollBar>
+                        <LeftPanel>
+                            <TableLabels >
+                                <p>Time</p>
+                                <p>Sender</p>
+                                <p>Subject</p>
+                            </TableLabels>
+                            {mails.map((mail, index) =>
+                                (
+                                    <Email key={index} onClick={() => handleMailClick(index)}>
+                                        <Time>
+                                            {moment(mail.headerLines[8].line, "Date: ddd, DD MMM YYYY HH:mm:ss ZZ").format('LT')}
+                                        </Time>
+                                        <SenderEmail>
+                                            {mail.fromAddress}
+                                        </SenderEmail>
+                                        <Subject>
+                                            {mail.subject}
+                                        </Subject>
+                                    </Email>
+                                )
+                            )}
+                        </LeftPanel>
+                    </PerfectScrollBar>
+                    : <p>No communication yet</p>}
+                <RightPanel>
+                    {currentMail || currentMail === 0 ?
+                        <>
+                            <Details onClick={() => { setShowDetails(!showDetails) }}>
+                                {showDetails ? null : <p>Details</p>}
+                                {showDetails ?
+                                    <>
+                                        <Time>
+                                            {moment(mails[currentMail].headerLines[8].line, "Date: ddd, DD MMM YYYY HH:mm:ss ZZ").format('YYYY/MM/DD HH:MM')}
+                                        </Time>
+                                        <SenderEmail>
+                                            {mails[currentMail].fromAddress}
+                                        </SenderEmail>
+                                        <Subject>
+                                            {mails[currentMail].subject}
+                                        </Subject>
+                                    </>
+                                    : null}
+                            </Details>
+                            <Body dangerouslySetInnerHTML={createMarkupBody()}>
+                            </Body>
+                        </>
+                        : null}
+                </RightPanel>
+            </Container>
+        </>
     )
 }
 
@@ -119,7 +123,7 @@ export default Mails
 
 const Container = styled.div`
     padding: 0;    
-    height: 80vh;        
+    min-height: 40vh;        
     display: grid;
     grid-template-columns: 2fr 3fr;
 `;

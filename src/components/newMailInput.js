@@ -34,14 +34,22 @@ const StyledInput = styled.input`
     height: 2rem;
     width: 20rem;
     margin-right: 2rem;
+    border: 1px solid var(--blue);
+    font-size: 16px;
+    padding-left: 5px;
 `;
 
 const StyledButton = styled.button`
     height: 2rem;
     width: 12rem;
-    border-radius: 0.5rem;
+    border-radius: 3px;
     border: none;
-
+    font-size: 16px;
+    background-color: var(--blue);
+    color:black;
+    :focus {
+        outline: none;
+    }
 `;
 
 const StyledInfo = styled.h3`
