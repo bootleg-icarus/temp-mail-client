@@ -156,4 +156,7 @@ const ExampleRequest = styled.div`
     p{
         margin:0;
     }    
+    @media (max-width: 650px) { 
+        max-width: 23rem;    
+    }
 `;

@@ -28,6 +28,9 @@ const Container = styled.div`
     justify-content:center;
     align-items:center;
     margin: 2rem;
+    @media (max-width: 550px) { 
+        flex-direction:column;
+    }
 `;
 
 const StyledInput = styled.input`
@@ -37,6 +40,12 @@ const StyledInput = styled.input`
     border: 1px solid var(--blue);
     font-size: 16px;
     padding-left: 5px;
+    @media (max-width: 550px) { 
+        margin-right: 0;
+    }
+    @media (max-width: 350px) { 
+        width:15rem;
+    }
 `;
 
 const StyledButton = styled.button`
@@ -49,6 +58,9 @@ const StyledButton = styled.button`
     color:black;
     :focus {
         outline: none;
+    }
+    @media (max-width: 550px) { 
+        margin-top: 10px;
     }
 `;
 
